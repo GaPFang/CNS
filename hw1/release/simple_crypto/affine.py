@@ -22,7 +22,6 @@ for j in range(32, 96):
     # zero padding
     affine_dict.update({hex((j * a + b) % 256)[2:].zfill(2): chr(j)})
 m = ""
-print(affine_dict)
 for i in range(len(c) // 2):
     if c[i * 2:i * 2 + 2] in affine_dict:
         m += affine_dict[c[i * 2:i * 2 + 2]]
