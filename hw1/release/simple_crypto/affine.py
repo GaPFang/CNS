@@ -10,15 +10,15 @@ x1, x2 = firstTwo[0], firstTwo[1]
 y1, y2 = c_firstTwo[0], c_firstTwo[1]
 # print(x1, x2, y1, y2)
 
-ab_list = []
-for a in range(256):
-    for b in range(256):
-        if (x1 * a + b) % 256 == y1 and (x2 * a + b) % 256 == y2:
-            ab_list.append((a, b))
+a, b = 0, 0
+for _a in range(256):
+    for _b in range(256):
+        if (x1 * _a + _b) % 256 == y1 and (x2 * _a + _b) % 256 == y2:
+            a, b = _a, _b
+print(a, b)
 affine_dict = {}
-for i in range(len(ab_list)):
-    for j in range(32, 128):
-        affine_dict.update({hex((j * ab_list[i][0] + ab_list[i][1]) % 256)[2:]: chr(j)})
+for j in range(32, 128):
+    affine_dict.update({hex((j * a + b) % 256)[2:]: chr(j)})
 m = ""
 for i in range(len(c) // 2):
     if c[i * 2:i * 2 + 2] in affine_dict:
