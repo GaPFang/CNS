@@ -1,9 +1,9 @@
 import socket
+import sys
 
-HOST = 'localhost'  # localhost
-PORT = 12345        # Example port number
-
-def main():
+def socket_main():
+    HOST = 'localhost'  # localhost
+    PORT = 12345        # Example port number
     while True:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((HOST, PORT))
@@ -12,11 +12,17 @@ def main():
             conn, addr = s.accept()
             with conn:
                 print('Connected by', addr)
-                while True:
-                    data = conn.recv(1024)
-                    if not data:
-                        break
-                    conn.sendall(f'from server: '.encode() + data)
+                # redirect stdout to socket and without buffering
+                sys.stdout = conn.makefile('w', buffering=None)
+                sys.stdin = conn.makefile('r', buffering=None)
+                main()
+
+def main():
+    while True:
+        data = input("Enter message: ")
+        if not data:
+            break
+        print(f'from server: {data}', flush=True)
 
 if __name__ == "__main__":
-    main()
+    socket_main()
