@@ -54,16 +54,20 @@ class Server:
         self.sk = sk
         self.recv_buffer = []
 
-    def recv(self, packet: Packet):
+    def recv(self, packet: Packet, r):
         self.recv_buffer.append(packet)
-        if len(self.recv_buffer) >= 3:
+        if len(self.recv_buffer) >= 10:
             self.recv_buffer, processing_buffer = [], self.recv_buffer
-            for packet in processing_buffer:
-                send_to, next_packet = packet.decrypt_server(self.sk)
-                self.send_to_server(send_to, next_packet)
+            for i in range(len(processing_buffer)):
+                send_to, next_packet = processing_buffer[i].decrypt_server(self.sk)
+                processing_buffer[i] = f'({send_to}, {next_packet.data.hex()})'
+                # self.send_to_server(send_to, next_packet)
+            return processing_buffer
+        return None
 
-    def send_to_server(self, target, packet):
-        pass
+    # def send_to_server(self, target, packet):
+    #     print(f'({target}, {packet})')
+    #     return(f'({target}, {packet})')
 
 def main():
     pk, sk = PublicKeyCipher.gen_key()
