@@ -30,7 +30,7 @@ class Packet:
         return tmp + cipher
     
     def encrypt_server(data, send_to, pk):
-        one_time_key = int.from_bytes(randbytes(0).ljust(16, b'\x00'), 'big')
+        one_time_key = int.from_bytes(randbytes(0).ljust(368, b'\x00'), 'big')
         cipher = StreamCipher.encrypt(one_time_key, i2b(send_to).ljust(20, b'\x00') + data.ljust(348, b'\x00')[:348])
         tmp = PublicKeyCipher.encrypt(pk, one_time_key)
         return tmp + cipher

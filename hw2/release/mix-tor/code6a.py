@@ -23,6 +23,7 @@ def main():
         s = r.recvline().strip()
         if s[:3] == b'CNS':
             print(s.decode())
+            r.close()
             break
         ret = myServer.recv(Packet(byteStr_to_byte(s)), r)
         if ret:

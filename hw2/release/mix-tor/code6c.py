@@ -27,7 +27,7 @@ def main():
         print(next_hop)
         p = next_packet
         if next_hop == 10:
-            print(p.decrypt_client(sk[10]))
+            print(p.decrypt_client(sk[10]).decode())
             break
 
 if __name__ == "__main__":

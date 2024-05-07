@@ -47,3 +47,14 @@ class PublicKeyCipher:
         r_i = int.from_bytes(r, 'big')
         c_i = int.from_bytes(c, 'big')
         return (pow(c_i, d, n) - r_i + n) % n
+    
+def main():
+    pk, sk = PublicKeyCipher.gen_key()
+    one_time_key = int.from_bytes(randbytes(0).ljust(16, b'\x00'), 'big')
+    print(f'one_time_key: {one_time_key}')
+    tmp = PublicKeyCipher.encrypt(pk, one_time_key)
+    one_time_key2 = PublicKeyCipher.decrypt(sk, tmp)
+    print(f'one_time_key2: {one_time_key2}')
+
+if __name__ == '__main__':
+    main()
